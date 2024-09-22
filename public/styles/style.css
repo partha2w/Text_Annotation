@@ -18,6 +18,29 @@ body{
     padding: 2%;
 }
 
+#tags-input{
+  margin: 1%;
+}
+#tag-name{
+  font-size: 18px;
+  padding: 5px;
+  max-width: 15%;
+}
+#tags-input button{
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tag-button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin: 1%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
 .button-9 {
   appearance: button;
   backface-visibility: hidden;

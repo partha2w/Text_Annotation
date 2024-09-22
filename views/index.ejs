@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assamese text annotation</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div id="header">
+        <h1>Assamese Text Annotation</h1>
+        <p>About this tool.........</p>
+    </div>
+    
+    <div id="content">
+        <div class="upload">
+            <input type="file" id="fileInput" accept=".txt">
+            <input class="button-9" type="submit" value="Submit" onclick="uploadFile()">
+        </div>
+        <div id="editable-div" contenteditable="true">
+            <!-- text that to be upload -->
+        </div>
+        <!-- <button class="button-5" onclick="highlightEntities()">Annotate</button> -->
+    </div>
+
+    <script>
+
+        // handle text file upload--
+        function uploadFile(){
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+            if(!file){
+                alert('Please Upload a file');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Display the file content in the editable div
+                const textContent = e.target.result;
+                document.getElementById('editable-div').textContent = textContent;
+
+                fetch('/api/annotate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: textContent }) // Send the text as JSON
+                })
+                .then(response => response.json()) // Parse the JSON response
+                .then(data => {
+                    // Handle the response and highlight the entities
+                    highlightEntities(data.annotatedEntities);
+                    
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Handle any errors
+                });
+            };
+
+            reader.readAsText(file, 'UTF-8');
+        } 
+
+    
+        function highlightEntities(annotatedEntities) {
+            let editableDiv = document.getElementById('editable-div');
+            let content = editableDiv.innerHTML;
+
+            // Loop through the entities and wrap them in <span> tags with appropriate classes
+            annotatedEntities.forEach(entity => {
+                let regex = new RegExp(`(${entity.text})`, 'g');
+                let spanClass = '';
+
+                // Apply classes based on entity type
+                if (entity.type === 'PERSON') {
+                    spanClass = 'entity-person';
+                } else if (entity.type === 'LOCATION') {
+                    spanClass = 'entity-location';
+                }else if (entity.type === 'ORGANIZATION') {
+                    spanClass = 'entity-org';
+                }else if (entity.type === 'RIVER') {
+                    spanClass = 'entity-river';
+                }else if (entity.type === 'ANIMAL') {
+                    spanClass = 'entity-animal';
+                }else if (entity.type === 'DATE') {
+                    spanClass = 'entity-date';
+                }
+
+                // Replace entity text with wrapped span
+                content = content.replace(regex, `<span class="${spanClass}">$1</span>`);
+        });
+
+        // Update the content with highlighted text
+        editableDiv.innerHTML = content;
+    }
+
+    </script>
+</body>
+</html>

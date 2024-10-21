@@ -15,23 +15,26 @@
     </div>
     
     <div id="content">
-        <div class="upload">
-            <input type="file" id="fileInput" accept=".txt">
-            <input class="button-9" type="submit" value="Submit" onclick="uploadFile()">
-        </div>
+        <form id="upload-form">
+            <input type="file" id="textFile" accept=".txt">
+            <!-- <input class="button-9" type="submit" value="Submit" onclick="uploadFile()"> -->
+            <button class="button-9" type="submit">Upload</button>
+        </form>
 
         <div id="tags-input">
             <input type="text" id="tag-name" placeholder="New Tag">
-            <button onclick="addTag()">+</button>
-            <!-- <button onclick="untagSelectedWord()">Untag Selected Word</button> -->
+            <button id="addTag">Add Tag</button>
+            <button id="removeTag">Untag</button>
         </div>
         <div id="tags"></div>
-
+        <button id="annotate-btn">Annotate Text</button>
         <div id="editable-div" contenteditable="true">
-            <!-- text that to be upload -->
+            <!-- content added here -->
         </div>
-        <!-- <button class="button-5" onclick="highlightEntities()">Annotate</button> -->
+        <div>
+            <button id="save-annotations-btn">Save Annotations</button>
+        </div>
     </div>
-<script src="script.js"></script>
+<script src="script2.js"></script>
 </body>
 </html>

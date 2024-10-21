@@ -13,7 +13,7 @@ function addTag(){
         newButton.style.backgroundColor = colors[colorIndex];
         newButton.classList.add("tag-button");
 
-        colorIndex = (colorIndex+1) % colors.length;
+        colorIndex = (colorIndex+1) % colors.length; 
 
         newButton.addEventListener("click",function(){
             if(selectedText !==''){
@@ -55,12 +55,39 @@ function tagSelectedWord(tagName,color){
     selectedText = '';
  }
 
+ function untagSelectedWord(){
+      // Get the selected text and its range
+      const selection = window.getSelection();
+
+      if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const selectedNode = range.commonAncestorContainer;
+  
+          // Check if the selected text is inside a <span>
+          if (selectedNode.parentNode.tagName === "SPAN") {
+              const spanNode = selectedNode.parentNode;
+  
+              // Get the span's content
+              const textContent = spanNode.textContent;
+
+              const cleanText = textContent.replace(/\s?\([A-Z]+\)/g, '');
+  
+              // Replace the <span> with its plain text content, effectively untagging
+              spanNode.replaceWith(cleanText);
+  
+              // Clear the selection after untagging
+              selection.removeAllRanges();
+          } else {
+              alert('Please select a tagged word to untag.');
+          }
+      }
+ }
+
 
 
 
 // handle text file upload--
 function uploadFile(){
-    const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
     if(!file){
         alert('Please Upload a file');

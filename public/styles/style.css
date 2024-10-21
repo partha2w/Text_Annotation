@@ -13,7 +13,7 @@ body{
     min-height: 70vh;
     border-radius: 5px;
 }
-.upload{
+#upload-form{
     text-align: center;
     padding: 2%;
 }
@@ -99,7 +99,7 @@ body{
 
 
 #editable-div {
-    font-family: "Noto Sans Assamese", sans-serif;
+    /* font-family: "Noto Sans Assamese", sans-serif; */
     border: 1px solid #ccc;
     padding: 10px;
     margin: 0 10px;

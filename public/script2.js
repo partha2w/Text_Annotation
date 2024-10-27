@@ -80,3 +80,33 @@ document.getElementById("editable-div").addEventListener("mouseup",()=>{
     selectedWord = selection;
   }
 });
+
+// Handling Untagging------
+document.getElementById("removeTag").addEventListener("click",()=>{
+  const untagWord = window.getSelection();
+
+  if (untagWord.rangeCount > 0) {
+    const range = untagWord.getRangeAt(0);
+
+    const selectedNode = range.commonAncestorContainer;
+
+    // Check if the selected text is inside a <span>
+    if (selectedNode.parentNode.tagName === "SPAN") {
+      const spanNode = selectedNode.parentNode;
+      
+        
+        //Get the span's content
+        const textContent = spanNode.textContent;
+
+        const cleanText = textContent.replace(/\s?\([A-Z]+\)/g, '');
+
+        // Replace the <span> with its plain text content, effectively untagging
+        spanNode.replaceWith(cleanText);
+
+        // Clear the selection after untagging
+        untagWord.removeAllRanges();
+    } else {
+        alert('Please select a tagged word to untag.');
+    }
+  }
+});

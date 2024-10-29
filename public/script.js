@@ -1,155 +1,170 @@
-var colors = ['#FF8484','#FFF584','#9FFF84','#84FFE9','#8497FF','#C084FF','#FF84D8','#FFC484','#84FF99','#ED84FF']
+const annotations = []; // Array to store user annotations
+
+
+// Handling upload----------
+document.getElementById("upload-form").addEventListener('submit',function(e){
+  e.preventDefault();
+  const fileInput = document.getElementById("textFile").files[0];
+  const formData = new FormData();
+  formData.append('textFile',fileInput);
+
+  fetch('/upload',{
+      method: 'POST',
+      body: formData
+  })
+  .then(response => response.json()) // Expecting JSON response from server
+    .then(data => {
+      // Display the uploaded text in the contenteditable div
+      const editableDiv = document.getElementById('editable-div');
+      editableDiv.innerHTML = data.text.replace(/\n/g, '<br>'); // Handling newlines
+    })
+  .catch(error=> console.error('Error: ',error));
+});
+
+// handling Annotation---------
+document.getElementById("annotate-btn").addEventListener('click',function(){
+  const text =document.getElementById("editable-div").innerHTML;
+  
+  fetch('/annotate',{
+    method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text})
+  })
+  .then(response=>response.json())
+  .then(data =>{
+    document.getElementById('editable-div').textContent = data.annotatedText;
+    })
+    .catch(error=> console.error('Error:',error));
+});
+  
+// Adding Tagging-----------
+let selectedWord = "";
+var colors =["#B2EBF2", "#C8E6C9", "#FFD59B", "#D1C4E9", "#81D4FA", "#FFC59B", "#FFCCCB", "#FFF59D", "#EF9A9A", "#C8E6C9", "#CE93D8", "#81D4FA"];
 var colorIndex = 0;
 
-var selectedText = "";
+document.getElementById("addTag").addEventListener('click',function(){
+var tagName = document.getElementById("tag-name").value;
+tagName = tagName.toUpperCase();
+if(tagName!=""){
+  var newButton = document.createElement("button");
+  newButton.innerHTML = tagName;
 
-function addTag(){
-    var tagName = document.getElementById("tag-name").value;
-    tagName = tagName.toUpperCase();
-    if(tagName !=' '){
-        var newButton = document.createElement("button");
-        newButton.innerHTML = tagName;
+  newButton.style.backgroundColor = colors[colorIndex];
+  newButton.classList.add("tag-button");
+  colorIndex = (colorIndex+1) % colors.length; 
 
-        newButton.style.backgroundColor = colors[colorIndex];
-        newButton.classList.add("tag-button");
+  // Handling Manual selection------- 
+  let color = newButton.style.backgroundColor;
+  newButton.addEventListener('click',function(){
+    if(selectedWord!=""){
+      var paragraphElement = document.getElementById("editable-div");
+      var paragraph = paragraphElement.innerHTML;
 
-        colorIndex = (colorIndex+1) % colors.length; 
+      // Replace the first occurrence of the selected text with a span
+      var taggedText = `<span style="background-color: ${color};">${selectedWord} (${tagName})</span>`;
+      paragraphElement.innerHTML = paragraph.replaceAll(selectedWord, taggedText);
+      
+      // Get the start and end positions of the selected text
+      const originalText = document.getElementById("editable-div").innerText;
+      const startIndex = originalText.indexOf(selectedWord);
+      const endIndex = startIndex + selectedWord.length;
+       
+      annotations.push({
+        text: selectedWord,
+        label: tagName,
+        start: startIndex,
+        end: endIndex
+      }); 
 
-        newButton.addEventListener("click",function(){
-            if(selectedText !==''){
-                tagSelectedWord(tagName,newButton.style.backgroundColor);
-            }
-        })
-
-        document.getElementById("tags").appendChild(newButton);
-        document.getElementById("tag-name").value = "";
+      // Reset selectedText after tagging
+      selectedWord = '';
     }
-}
+  })
 
- // Function to handle text selection in the sentence
- document.getElementById("editable-div").addEventListener('mouseup', function() {
-    selectedText = getSelectedText();
+  document.getElementById("tags").appendChild(newButton);
+  document.getElementById("tag-name").value = "";
+}
 });
 
-// Function to get the selected text
-function getSelectedText() {
-    var text = '';
-    if (window.getSelection) {
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type !== "Control") {
-        text = document.selection.createRange().text;
-    }
-    return text;
+// Handling Word Selection-----
+document.getElementById("editable-div").addEventListener("mouseup",()=>{
+const selection = window.getSelection().toString().trim();
+if(selection){
+  selectedWord = selection;
 }
+});
 
- // Function to wrap the selected word with a span and assign the tag name and color
-function tagSelectedWord(tagName,color){
-    var paragraphElement = document.getElementById("editable-div");
-    var paragraph = paragraphElement.innerHTML;
+// Handling Untagging------
+document.getElementById("removeTag").addEventListener("click",()=>{
+const untagWord = window.getSelection();
 
-    // Replace the first occurrence of the selected text with a span
-    var taggedText = `<span style="background-color: ${color};">${selectedText} (${tagName})</span>`;
-    paragraphElement.innerHTML = paragraph.replaceAll(selectedText, taggedText);
+if (untagWord.rangeCount > 0) {
+  const range = untagWord.getRangeAt(0);
 
-    // Reset selectedText after tagging
-    selectedText = '';
- }
+  const selectedNode = range.commonAncestorContainer;
 
- function untagSelectedWord(){
-      // Get the selected text and its range
-      const selection = window.getSelection();
+  // Check if the selected text is inside a <span>
+  if (selectedNode.parentNode.tagName === "SPAN") {
+    const spanNode = selectedNode.parentNode;
+    
+      
+      //Get the span's content
+      const textContent = spanNode.textContent;
 
-      if (selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0);
-          const selectedNode = range.commonAncestorContainer;
-  
-          // Check if the selected text is inside a <span>
-          if (selectedNode.parentNode.tagName === "SPAN") {
-              const spanNode = selectedNode.parentNode;
-  
-              // Get the span's content
-              const textContent = spanNode.textContent;
+      const cleanText = textContent.replace(/\s?\([A-Z]+\)/g, '');
 
-              const cleanText = textContent.replace(/\s?\([A-Z]+\)/g, '');
-  
-              // Replace the <span> with its plain text content, effectively untagging
-              spanNode.replaceWith(cleanText);
-  
-              // Clear the selection after untagging
-              selection.removeAllRanges();
-          } else {
-              alert('Please select a tagged word to untag.');
-          }
+      // Replace the <span> with its plain text content, effectively untagging
+      spanNode.replaceWith(cleanText);
+
+      // Find and remove the annotation in the annotations array
+      const annotationIndex = annotations.findIndex(
+        (annotation) => annotation.text === cleanText
+      );
+    
+      if (annotationIndex !== -1) {
+        annotations.splice(annotationIndex, 1); // Remove the annotation from array
+        console.log(`Removed annotation`);
+      } else {
+        console.warn("Annotation not found for the selected text.");
       }
- }
 
-
-
-
-// handle text file upload--
-function uploadFile(){
-    const file = fileInput.files[0];
-    if(!file){
-        alert('Please Upload a file');
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        // Display the file content in the editable div
-        const textContent = e.target.result;
-        document.getElementById('editable-div').textContent = textContent;
-
-        fetch('/api/annotate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: textContent }) // Send the text as JSON
-        })
-        .then(response => response.json()) // Parse the JSON response
-        .then(data => {
-            // Handle the response and highlight the entities
-            highlightEntities(data.annotatedEntities);
-            
-        })
-        .catch(error => {
-            console.error('Error:', error); // Handle any errors
-        });
-    };
-
-    reader.readAsText(file, 'UTF-8');
-} 
-
-
-function highlightEntities(annotatedEntities) {
-    let editableDiv = document.getElementById('editable-div');
-    let content = editableDiv.innerHTML;
-
-    // Loop through the entities and wrap them in <span> tags with appropriate classes
-    annotatedEntities.forEach(entity => {
-        let regex = new RegExp(`(${entity.text})`, 'g');
-        let spanClass = '';
-
-        // Apply classes based on entity type
-        if (entity.type === 'PERSON') {
-            spanClass = 'entity-person';
-        } else if (entity.type === 'LOCATION') {
-            spanClass = 'entity-location';
-        }else if (entity.type === 'ORGANIZATION') {
-            spanClass = 'entity-org';
-        }else if (entity.type === 'RIVER') {
-            spanClass = 'entity-river';
-        }else if (entity.type === 'ANIMAL') {
-            spanClass = 'entity-animal';
-        }else if (entity.type === 'DATE') {
-            spanClass = 'entity-date';
-        }
-
-        // Replace entity text with wrapped span
-        content = content.replace(regex, `<span class="${spanClass}">$1</span>`);
+      // Clear the selection after untagging
+      untagWord.removeAllRanges();
+  } else {
+      alert('Please select a tagged word to untag.');
+  }
+}
 });
 
-// Update the content with highlighted text
-editableDiv.innerHTML = content;
-}
+// Saving the custom Tags-----------------
+document.getElementById("save-annotations-btn").addEventListener("click",()=>{
+  fetch('/save-custom', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ annotations })
+})
+.then(response => response.json())
+.then(data => alert("Saved, Now you can Download"))
+.catch(error => console.error('Error saving annotations:', error));
+})
+
+document.getElementById("download-btn").addEventListener("click", function () {
+  fetch('/download')
+      .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.blob(); // Convert the response to a blob for download
+      })
+      .then(blob => {
+          const url = window.URL.createObjectURL(blob); // Create a download URL
+          const a = document.createElement('a'); // Create an anchor element
+          a.style.display = 'none';
+          a.href = url;
+          a.download = 'annotated_file.txt'; // Set the file name for download
+          document.body.appendChild(a); // Append the anchor to the body
+          a.click(); // Programmatically click the anchor to trigger download
+          window.URL.revokeObjectURL(url); // Revoke the object URL
+          alert("Annotated file downloaded successfully!");
+      })
+      .catch(error => console.error('Error:', error));
+});
+

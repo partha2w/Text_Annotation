@@ -11,7 +11,10 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(fileUpload());
 
-let memoryStorage = {};
+// In-memory storage for the original text and annotations
+let text = null;
+let annotationsData = {};
+
 
 app.get("/",(req,res)=>{
     res.render("index.ejs");
@@ -22,48 +25,33 @@ app.post('/upload',(req,res)=>{
     if (!textFile) {
         return res.status(400).json({ error: 'No file uploaded' });
     }
-    const text = textFile.data.toString();
+    text = textFile.data.toString();
     
-    // Store the text in memory with a unique ID
-    const id = Date.now();  
-    memoryStorage[id] = { text, annotations: [] };
+    annotationsData = {
+        originalText: text,
+        annotations: [] // Store user NER tags here
+    };
     
-    // Render the EJS template with the uploaded text
     res.json({ text });
 });
 
 app.post('/annotate',(req,res)=>{
-    const { id, annotation } = req.body;
-    if (!memoryStorage[id]) {
-        return res.status(404).json({ error: 'Text not found' });
-    }
+// auto aunottation---
+});
 
-    // Add annotation to the in-memory storage
-    memoryStorage[id].annotations.push(annotation);
-    
-    res.status(200).json({ message: 'Annotation saved', annotations: memoryStorage[id].annotations });
-})
+app.post("/save-custom",(req,res)=>{
+    const { annotations } = req.body; // Receive annotations from the frontend
+    annotationsData.annotations = annotations; // Update the annotation data
+    res.json({ message: 'Annotations saved!' })
+});
 
-
-// app.post("/api/annotate",(req,res)=>{
-//     const {text} = req.body ;
-
-//     // Simulate annotated entities (this should come from your actual NLP logic)
-//     const annotatedEntities = [
-//         { "text": "অসম", "type": "LOCATION" },
-//         { "text": "ভাৰত", "type": "LOCATION" },
-//         { "text": "ব্ৰহ্মপুত্ৰ", "type": "RIVER" },
-//         { "text": "হিমালয়", "type": "LOCATION" },
-//         { "text": "শংকৰদেৱ", "type": "PERSON" },
-//         { "text": "মাধৱদেৱ", "type": "PERSON" },
-//         { "text": "কাজিৰঙা", "type": "LOCATION" },
-//         { "text": "নৱবৈষ্ণৱ", "type": "ORGANIZATION" },
-//         { "text": "গ্ৰীষ্ম", "type": "DATE" },
-//         { "text": "একশৃঙ্গ গঁড়", "type": "ANIMAL" }
-//     ];
-    
-//     res.json({ annotatedEntities }); 
-// })
+// Endpoint to download annotations as a .txt file
+app.get("/download", (req, res) => {
+    const annotationText = JSON.stringify(annotationsData, null, 2); // Format as JSON text
+    res.setHeader("Content-Disposition", "attachment; filename=annotated_file.txt");
+    res.setHeader("Content-Type", "application/json");
+    res.send(annotationText); // Send the formatted JSON
+});
 
 app.listen(4000,()=>{
     console.log("server started");

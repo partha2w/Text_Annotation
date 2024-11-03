@@ -9,9 +9,14 @@
 
 </head>
 <body>
+    <div id="navBar">
+        <ul>
+            <li><a class="active" href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+          </ul>
+    </div>
     <div id="header">
         <h1>Assamese Text Annotation</h1>
-        <p>About this tool.........</p>
     </div>
     
     <div id="content">
@@ -21,19 +26,20 @@
         </form>
 
         <div id="tags-input">
-            <input type="text" id="tag-name" placeholder="New Tag">
-            <button id="addTag">Add Tag</button>
-            <button id="removeTag">Untag</button>
+            <input type="text" id="tag-name" placeholder="Type tag name">
+            <button id="addTag" class="button-9">Add Tag</button>
+            <button id="removeTag" class="button-9">Untag</button>
         </div>
         <div id="tags"></div>
-        <button id="annotate-btn">Annotate Text</button>
+        <button id="annotate-btn" class="button-18">Annotate Text</button>
+        <div class="final-btn">
+            <button id="save-annotations-btn" class="button-7">Save Annotations</button>
+            <button id="download-btn" class="button-7">Download Annotations</button>
+            </div>
         <div id="editable-div" contenteditable="true">
             <!-- content added here -->
         </div>
-        <div>
-            <button id="save-annotations-btn">Save Annotations</button>
-            <button id="download-btn">Download Annotations</button>
-        </div>
+        
     </div>
 <script src="script.js"></script>
 </body>

@@ -123,7 +123,6 @@ if (untagWord.rangeCount > 0) {
     
       if (annotationIndex !== -1) {
         annotations.splice(annotationIndex, 1); // Remove the annotation from array
-        console.log(`Removed annotation`);
       } else {
         console.warn("Annotation not found for the selected text.");
       }
@@ -167,4 +166,8 @@ document.getElementById("download-btn").addEventListener("click", function () {
       })
       .catch(error => console.error('Error:', error));
 });
+
+document.getElementById("annotate-btn").addEventListener("click",function(){
+  alert("Automatic Annotation not yet Developed...  Please Wait!");
+})
 

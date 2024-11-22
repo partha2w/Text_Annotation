@@ -33,13 +33,23 @@
         <div id="tags"></div>
         <button id="annotate-btn" class="button-18">Annotate Text</button>
         <div class="final-btn">
-            <button id="save-annotations-btn" class="button-7">Save Annotations</button>
+            <from>
+                <!-- <label for="cars">Choose an Tagging Schemes</label> -->
+                <select name="tag_format" id="tag_format">
+                    <option value="0">Choose an Tagging Schemes</option>
+                    <option value="IO">IO</option>
+                    <option value="JSON">JSON Annotation</option>
+                    <option value="BIO">BIO</option>
+                    <option value="BILUO">BILUO</option>
+                    <option value="BIL2">BIL2</option>
+                </select>
+                <button id="save-annotations-btn" class="button-7">Save Annotations</button>
+            </from>
             <button id="download-btn" class="button-7">Download Annotations</button>
             </div>
         <div id="editable-div" contenteditable="true">
-            <!-- content added here -->
-        </div>
-        
+            <!-- Content here -->
+        </div>   
     </div>
 <script src="script.js"></script>
 </body>

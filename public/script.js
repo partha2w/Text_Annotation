@@ -39,7 +39,7 @@ document.getElementById("annotate-btn").addEventListener('click',function(){
   
 // Adding Tagging-----------
 let selectedWord = "";
-var colors =["#B2EBF2", "#C8E6C9", "#FFD59B", "#D1C4E9", "#81D4FA", "#FFC59B", "#FFCCCB", "#FFF59D", "#EF9A9A", "#C8E6C9", "#CE93D8", "#81D4FA"];
+var colors =[ "#FFD59B","#81D4FA", "#68C95D", "#D1C4E9","#FFF59D", "#81D4FA", "#FFC59B", "#FFCCCB",  "#EF9A9A", "#C8E6C9", "#CE93D8", "#B2EBF2"];
 var colorIndex = 0;
 
 document.getElementById("addTag").addEventListener('click',function(){
@@ -137,34 +137,48 @@ if (untagWord.rangeCount > 0) {
 
 // Saving the custom Tags-----------------
 document.getElementById("save-annotations-btn").addEventListener("click",()=>{
-  fetch('/save-custom', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ annotations })
-})
-.then(response => response.json())
-.then(data => alert("Saved, Now you can Download"))
-.catch(error => console.error('Error saving annotations:', error));
+  const tagFormat = document.getElementById("tag_format").value;
+  const text = document.getElementById("editable-div").textContent;
+  if(tagFormat==0){
+    alert("Please choose an annotation Tagging Scheme to Save First!")
+  }else{
+    fetch('/save-custom', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ annotations,tagFormat,text})
+      })
+      .then(response => response.json())
+      .then(data => alert("Saved, Now you can Download"))
+      .catch(error => console.error('Error saving annotations:', error));
+  }
 })
 
+// Download the desired format-------------
 document.getElementById("download-btn").addEventListener("click", function () {
   fetch('/download')
-      .then(response => {
-          if (!response.ok) throw new Error('Network response was not ok');
-          return response.blob(); // Convert the response to a blob for download
-      })
-      .then(blob => {
-          const url = window.URL.createObjectURL(blob); // Create a download URL
-          const a = document.createElement('a'); // Create an anchor element
-          a.style.display = 'none';
-          a.href = url;
-          a.download = 'annotated_file.txt'; // Set the file name for download
-          document.body.appendChild(a); // Append the anchor to the body
-          a.click(); // Programmatically click the anchor to trigger download
-          window.URL.revokeObjectURL(url); // Revoke the object URL
-          alert("Annotated file downloaded successfully!");
-      })
-      .catch(error => console.error('Error:', error));
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            // Extract the file name from the Content-Disposition header
+            const contentDisposition = response.headers.get('Content-Disposition');
+            const fileName = contentDisposition
+                ? contentDisposition.split('filename=')[1]?.replace(/"/g, '') // Extract filename
+                : 'default_filename.txt'; // Fallback filename if header is missing
+
+            return response.blob().then(blob => ({ blob, fileName }));
+        })
+        .then(({ blob, fileName }) => {
+            const url = window.URL.createObjectURL(blob); // Create a download URL
+            const a = document.createElement('a'); // Create an anchor element
+            a.style.display = 'none';
+            a.href = url;
+            a.download = fileName; // Set the extracted file name for download
+            document.body.appendChild(a); // Append the anchor to the body
+            a.click(); // Programmatically click the anchor to trigger download
+            window.URL.revokeObjectURL(url); // Revoke the object URL
+            alert("Annotated file downloaded successfully!");
+        })
+        .catch(error => console.error('Error:', error));
 });
 
 document.getElementById("annotate-btn").addEventListener("click",function(){

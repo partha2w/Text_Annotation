@@ -105,6 +105,11 @@ background-color: rgb(1, 110, 1);
 background-color: #c21700;
 }
 
+#tag_format{
+  height: 2.4rem;
+  padding: 5px;
+}
+
 .about{
   margin: 5% auto;
   max-width: 80%;

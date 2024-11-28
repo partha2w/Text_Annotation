@@ -112,7 +112,10 @@ app.post("/save-custom", (req, res) => {
   }));
 
   // Output the result for debugging
-  res.json({ message: 'Annotations saved!'});
+  res.json({
+    message: 'Annotations saved!',
+    annotations: annotationsData.annotations // Include the array here
+  });
 });
 
 

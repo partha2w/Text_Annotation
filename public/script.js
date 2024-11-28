@@ -1,5 +1,59 @@
-const annotations = []; // Array to store user annotations
+let sentences = []; // To store split sentences
+let currentIndex = 0; // Current sentence index
+let annotations = []; // To store tagging information
 
+function updateSentence() {
+  const sentenceDisplay = document.getElementById('editable-div');
+  const currentSentence = sentences[currentIndex];
+
+  // Apply annotations to the current sentence
+  let annotatedSentence = currentSentence;
+  annotations.forEach(({ text, label, start, end, color }) => {
+      if (sentences[currentIndex].includes(text)) {
+          const taggedText = `<span style="background-color: ${color};">${text} (${label})</span>`;
+          annotatedSentence = annotatedSentence.replaceAll(text, taggedText);
+      }
+  });
+
+  // Update the DOM
+  sentenceDisplay.innerHTML = annotatedSentence;
+  document.getElementById('totalSentences').textContent = `Sentence ${currentIndex + 1} of ${sentences.length}`;
+}
+
+// Showing annotation to user---------------------
+function showAnnotations(data) {
+  const container = document.getElementById("annotationsContainer");
+
+  // Create a table
+  const table = document.createElement("table");
+  table.border = "1";
+
+  // Create table header
+  const headerRow = document.createElement("tr");
+  headerRow.innerHTML = "<th>Text</th><th>Label</th>";
+  table.appendChild(headerRow);
+
+  // Populate table rows
+  data.forEach(value => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${value.text}</td><td>${value.label}</td>`;
+      table.appendChild(row);
+  });
+
+  // Append the table to the container
+  container.innerHTML = ""; // Clear previous content
+  container.appendChild(table);
+}
+// --------------------------
+document.getElementById('prevButton').addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + sentences.length) % sentences.length; // Loop back
+  updateSentence();
+});
+
+document.getElementById('nextButton').addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % sentences.length; // Loop forward
+  updateSentence();
+});
 
 // Handling upload----------
 document.getElementById("upload-form").addEventListener('submit',function(e){
@@ -14,9 +68,10 @@ document.getElementById("upload-form").addEventListener('submit',function(e){
   })
   .then(response => response.json()) // Expecting JSON response from server
     .then(data => {
-      // Display the uploaded text in the contenteditable div
-      const editableDiv = document.getElementById('editable-div');
-      editableDiv.innerHTML = data.text.replace(/\n/g, '<br>'); // Handling newlines
+      sentences = data.text.split(/(?<=[।!?])/).filter(sentence => sentence.trim() !== '');
+      currentIndex = 0;
+      annotations = []; // Reset annotations for new content
+      updateSentence(); // Show the first sentence
     })
   .catch(error=> console.error('Error: ',error));
 });
@@ -64,20 +119,18 @@ if(tagName!=""){
       var taggedText = `<span style="background-color: ${color};">${selectedWord} (${tagName})</span>`;
       paragraphElement.innerHTML = paragraph.replaceAll(selectedWord, taggedText);
       
-      // Get the start and end positions of the selected text
-      const originalText = document.getElementById("editable-div").innerText;
-      const startIndex = originalText.indexOf(selectedWord);
-      const endIndex = startIndex + selectedWord.length;
-       
-      annotations.push({
-        text: selectedWord,
-        label: tagName,
-        start: startIndex,
-        end: endIndex
-      }); 
-
-      // Reset selectedText after tagging
-      selectedWord = '';
+      const startIndex = sentences[currentIndex].indexOf(selectedWord);
+      if (startIndex !== -1) {
+          annotations.push({
+              text: selectedWord,
+              label: tagName,
+              start: startIndex,
+              end: startIndex + selectedWord.length,
+              color: color
+          });
+          updateSentence(); // Refresh the displayed sentence
+          selectedWord = ""; // Reset selected word
+      }
     }
   })
 
@@ -122,7 +175,8 @@ if (untagWord.rangeCount > 0) {
       );
     
       if (annotationIndex !== -1) {
-        annotations.splice(annotationIndex, 1); // Remove the annotation from array
+        annotations.splice(annotationIndex, 1); // Remove the annotation from 
+        updateSentence(); // Refresh the displayed sentence
       } else {
         console.warn("Annotation not found for the selected text.");
       }
@@ -142,14 +196,33 @@ document.getElementById("save-annotations-btn").addEventListener("click",()=>{
   if(tagFormat==0){
     alert("Please choose an annotation Tagging Scheme to Save First!")
   }else{
-    fetch('/save-custom', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ annotations,tagFormat,text})
-      })
-      .then(response => response.json())
-      .then(data => alert("Saved, Now you can Download"))
-      .catch(error => console.error('Error saving annotations:', error));
+    // Reconstruct the full paragraph with annotations applied
+    const annotatedParagraph = sentences.map(sentence => {
+      let annotatedSentence = sentence;
+      annotations.forEach(({ text, label }) => {
+          if (sentence.includes(text)) {
+              const taggedText = `${text} (${label})`;
+              annotatedSentence = annotatedSentence.replaceAll(text, taggedText);
+          }
+      });
+      return annotatedSentence;
+      }).join(" "); // Combine sentences into a full paragraph
+      fetch('/save-custom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ annotations,tagFormat,text:annotatedParagraph})
+        })
+        .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json(); // Parse the JSON from the response
+        })
+        .then(data => {
+          showAnnotations(data.annotations); //showing the annotation to user
+          alert("Saved, Now you can Download");
+        })
+        .catch(error => console.error('Error saving annotations:', error));
   }
 })
 

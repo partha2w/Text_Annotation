@@ -53,7 +53,9 @@ app.post("/save-custom", (req, res) => {
   annotationsData.annotations = annotations;
 
   // Split the full text into words
-  const allWords = text.split(" ");
+  const singleWords = text.split(" ");
+  // Filter out words that match the pattern of being enclosed in brackets
+  const allWords = singleWords.filter(word => !/^\(.*\)$/.test(word));
   const wordTagMap = {}; // To map words to their tags
 
   // Initialize all words as non-entity (O)

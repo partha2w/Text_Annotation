@@ -1,3 +1,4 @@
+
 let sentences = []; // To store split sentences
 let currentIndex = 0; // Current sentence index
 let annotations = []; // To store tagging information
@@ -257,4 +258,5 @@ document.getElementById("download-btn").addEventListener("click", function () {
 document.getElementById("annotate-btn").addEventListener("click",function(){
   alert("Automatic Annotation not yet Developed...  Please Wait!");
 })
+
 

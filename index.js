@@ -13,10 +13,14 @@ app.use(fileUpload());
 
 // In-memory storage for the original text and annotations
 let text = null;
-let annotationsData = {};
 let formattedAnnotations = [];
 let tagFormat;
 
+let annotationsData = {
+  originalText: '',
+  annotations: [],
+  tagFormat: 'IO'
+};
 
 app.get("/",(req,res)=>{
     res.render("index.ejs");
@@ -24,6 +28,10 @@ app.get("/",(req,res)=>{
 
 app.get("/about",(req,res)=>{
     res.render("about.ejs");
+})
+
+app.get("/coreference",(req,res)=>{
+    res.render("coreference.ejs");
 })
 
 app.post('/upload',(req,res)=>{

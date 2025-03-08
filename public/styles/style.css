@@ -278,3 +278,79 @@ background-color: #c21700;
   justify-content: space-between;
   margin: 1rem;
 }  
+
+
+.mention {
+  background-color: #98FB98;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.mention.selected {
+  border: 2px solid #ff0000;
+}
+
+.cluster {
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.cluster-header {
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.mention-popup {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.button-9 {
+  margin: 5px;
+}
+
+.navigator {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#clusters {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+.mentions {
+  margin: 10px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cluster-mention {
+  background: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+}
+
+.delete-mention {
+  color: red;
+  margin-left: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.delete-cluster {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  margin-left: 10px;
+  padding: 2px 5px;
+}

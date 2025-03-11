@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isNewCluster) {
       currentClusterId = null;
-      document.getElementById('cluster-name').value = '';
     }
 
     // Create new cluster if needed
@@ -128,8 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     clusters.push(cluster);
     currentClusterId = cluster.id;
-    document.getElementById('cluster-name').value = '';
     updateClustersDisplay();
+    document.getElementById('cluster-name').value = '';
   }
 
 
@@ -138,28 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClustersDisplay();
   }
 
-  // Modify the delete functionality in crscript.js
-  document.getElementById('removeMentions').addEventListener('click', () => {
-    // Delete entire cluster if cluster is selected
-    if (currentClusterId !== null) {
-      clusters = clusters.filter((_, idx) => idx !== currentClusterId);
-      currentClusterId = null;
-    }
-    // Delete selected mentions
-    else {
-      const selectedMentions = document.querySelectorAll('.mention.selected');
-      selectedMentions.forEach(mention => {
-        const clusterId = parseInt(mention.dataset.clusterId);
-        clusters[clusterId].mentions = clusters[clusterId].mentions.filter(m =>
-          !(m.start === parseInt(mention.dataset.start) &&
-            m.sentenceIndex === currentSentenceIndex
-          ));
-        mention.replaceWith(mention.textContent);
-      });
-    }
-    updateClustersDisplay();
-    highlightMentions();
-  });
+
 
   // Save Annotations
   document.getElementById('save-annotations-btn').addEventListener('click', () => {

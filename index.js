@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import cors from "cors";
 const app = express();
+const port = 4000;
 
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
@@ -150,6 +151,6 @@ app.get("/download", (req, res) => {
     }
 });
 
-app.listen(4000,()=>{
-    console.log("server started");
+app.listen(port,()=>{
+    console.log("server started at port: "+port);
 })

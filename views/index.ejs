@@ -25,14 +25,14 @@
             <input type="file" id="textFile" accept=".txt">
             <button class="button-9" type="submit">Upload</button>
         </form>
-
+        <div id="annotationsContainer"></div>
         <div id="tags-input">
             <input type="text" id="tag-name" placeholder="Type tag name">
             <button id="addTag" class="button-9">Add Tag</button>
             <button id="removeTag" class="button-9">Untag</button>
         </div>
         <div id="tags"></div>
-        <button id="annotate-btn" class="button-18">Annotate Text</button>
+        <button id="annotate-btn" class="button-18" onclick="analyzeText()">Annotate Text</button>
         <div class="final-btn">
             <from>
                 <!-- <label for="cars">Choose an Tagging Schemes</label> -->
@@ -48,7 +48,6 @@
             </from>
             <button id="download-btn" class="button-7">Download Annotations</button>
         </div>
-        <div id="annotationsContainer"></div>
             <div id="editable-div" contenteditable="true">Upload a file to start...</div>
             <div id="totalSentences"></div>
             <div class="navigator">

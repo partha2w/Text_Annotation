@@ -1,19 +1,21 @@
 
+let originalText = ""; // To store the raw original text
 let sentences = []; // To store split sentences
 let currentIndex = 0; // Current sentence index
 let annotations = []; // To store tagging information
 
+// Update the displayed sentence with annotations
 function updateSentence() {
   const sentenceDisplay = document.getElementById('editable-div');
-  const currentSentence = sentences[currentIndex];
+  let currentSentence = sentences[currentIndex]; // Start with the original sentence
 
-  // Apply annotations to the current sentence
-  let annotatedSentence = currentSentence;
-  annotations.forEach(({ text, label, start, end, color }) => {
-      if (sentences[currentIndex].includes(text)) {
-          const taggedText = `<span style="background-color: ${color};">${text} (${label})</span>`;
-          annotatedSentence = annotatedSentence.replaceAll(text, taggedText);
-      }
+  // Remove previous annotations by resetting to the original sentence
+  let annotatedSentence = currentSentence; 
+
+  annotations.forEach(({ text, label, color }) => {
+    const taggedText = `<span style="background-color: ${color};">${text} (${label})</span>`;
+    const regex = new RegExp(`(?<!>)${text}(?!<)`, "g"); 
+    annotatedSentence = annotatedSentence.replace(regex, taggedText);
   });
 
   // Update the DOM
@@ -21,7 +23,8 @@ function updateSentence() {
   document.getElementById('totalSentences').textContent = `Sentence ${currentIndex + 1} of ${sentences.length}`;
 }
 
-// Showing annotation to user---------------------
+
+// Showing annotation table to user---------------------
 function showAnnotations(data) {
   const container = document.getElementById("annotationsContainer");
 
@@ -63,6 +66,13 @@ document.getElementById("upload-form").addEventListener('submit',function(e){
   const formData = new FormData();
   formData.append('textFile',fileInput);
 
+  const reader = new FileReader();
+  reader.readAsText(fileInput); // Read file content as text
+
+  reader.onload = function () {
+    originalText = reader.result; // Store the original text
+  };
+
   fetch('/upload',{
       method: 'POST',
       body: formData
@@ -76,23 +86,7 @@ document.getElementById("upload-form").addEventListener('submit',function(e){
     })
   .catch(error=> console.error('Error: ',error));
 });
-
-// handling Annotation---------
-document.getElementById("annotate-btn").addEventListener('click',function(){
-  const text =document.getElementById("editable-div").innerHTML;
-  
-  fetch('/annotate',{
-    method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({text})
-  })
-  .then(response=>response.json())
-  .then(data =>{
-    document.getElementById('editable-div').textContent = data.annotatedText;
-    })
-    .catch(error=> console.error('Error:',error));
-});
-  
+ 
 // Adding Tagging-----------
 let selectedWord = "";
 var colors =[ "#FFD59B","#81D4FA", "#68C95D", "#D1C4E9","#FFF59D", "#81D4FA", "#FFC59B", "#FFCCCB",  "#EF9A9A", "#C8E6C9", "#CE93D8", "#B2EBF2"];
@@ -149,46 +143,45 @@ if(selection){
 });
 
 // Handling Untagging------
-document.getElementById("removeTag").addEventListener("click",()=>{
-const untagWord = window.getSelection();
+// Handling Untagging------
+document.getElementById("removeTag").addEventListener("click", () => {
+  const untagWord = window.getSelection();
 
-if (untagWord.rangeCount > 0) {
-  const range = untagWord.getRangeAt(0);
+  if (untagWord.rangeCount > 0) {
+    const range = untagWord.getRangeAt(0);
+    const selectedNode = range.commonAncestorContainer;
 
-  const selectedNode = range.commonAncestorContainer;
+    // Ensure selected text is inside a <span>
+    if (selectedNode.parentNode.tagName === "SPAN") {
+      const spanNode = selectedNode.parentNode;
 
-  // Check if the selected text is inside a <span>
-  if (selectedNode.parentNode.tagName === "SPAN") {
-    const spanNode = selectedNode.parentNode;
-    
-      
-      //Get the span's content
+      // Extract the plain text from the span (removing annotation label)
       const textContent = spanNode.textContent;
+      const cleanText = textContent.replace(/\s?\([A-Z-]+\)/g, '').trim(); // Remove label like (B-LOC)
 
-      const cleanText = textContent.replace(/\s?\([A-Z]+\)/g, '');
-
-      // Replace the <span> with its plain text content, effectively untagging
+      // Replace the <span> with its plain text content
       spanNode.replaceWith(cleanText);
 
       // Find and remove the annotation in the annotations array
       const annotationIndex = annotations.findIndex(
-        (annotation) => annotation.text === cleanText
+        (annotation) => annotation.text.trim() === cleanText
       );
-    
+
       if (annotationIndex !== -1) {
-        annotations.splice(annotationIndex, 1); // Remove the annotation from 
-        updateSentence(); // Refresh the displayed sentence
-      } else {
-        console.warn("Annotation not found for the selected text.");
+        annotations.splice(annotationIndex, 1); // Remove annotation
       }
 
-      // Clear the selection after untagging
+      // Refresh sentence to reflect untagging
+      updateSentence();
+
+      // Clear selection after untagging
       untagWord.removeAllRanges();
-  } else {
+    } else {
       alert('Please select a tagged word to untag.');
+    }
   }
-}
 });
+
 
 // Saving the custom Tags-----------------
 document.getElementById("save-annotations-btn").addEventListener("click",()=>{
@@ -255,8 +248,29 @@ document.getElementById("download-btn").addEventListener("click", function () {
         .catch(error => console.error('Error:', error));
 });
 
-document.getElementById("annotate-btn").addEventListener("click",function(){
-  alert("Automatic Annotation not yet Developed...  Please Wait!");
-})
 
 
+// Automatic annotation
+async function analyzeText() {
+  // check if original text empty or not
+  if(originalText == "") {
+    alert("Please upload a text file first!");
+    return;
+  }
+  try {
+    const response = await fetch("/analyze", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ originalText })
+    });
+
+    const data = await response.json();
+    annotations = data.newAnnotations;
+    updateSentence();
+  } catch (error) {
+    alert("Error fetching entities from Model:", error);
+    console.error("Error:", error);
+  }
+}

@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import cors from "cors";
+import axios from "axios";
 const app = express();
 const port = 4000;
 
@@ -50,8 +51,36 @@ app.post('/upload',(req,res)=>{
     res.json({ text });
 });
 
-app.post('/annotate',(req,res)=>{
-// auto aunottation---
+// Route to process text and get NER entities
+app.post("/analyze", async (req, res) => {
+  // to analyze sentence by sentence use following code, replace the text
+  // const { text} = req.body;
+  try {
+      const response = await axios.post("http://127.0.0.1:8000/predict", { text });
+      const labels = response.data.entities;
+      const words = text.split(/\s+/);
+      let newAnnotations = annotationsData.annotations;
+      let startIndex = 0;
+
+      words.forEach((word, index) => {
+        let label = labels[index] || "O"; // Assign label from AI output
+        if (label !== "O") {  // Only store entities
+            newAnnotations.push({
+                text: word,
+                label: label,
+                start: startIndex,
+                end: startIndex + word.length,
+                color: "grey" // Function to get color for entity type
+            });
+        }
+        startIndex += word.length + 1; // Update start index (considering spaces)
+    });
+    res.json({ newAnnotations });
+    res.render("index.ejs")
+  } catch (error) {
+    console.error("Error fetching entities:", error);
+    res.status(500).json({ error: "Failed to analyze text" });
+  }
 });
 
 // ----------Save Custom Annotation----------------------

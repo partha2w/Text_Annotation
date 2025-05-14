@@ -1,0 +1,109 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>
+        Assamese annotation Tool
+    </title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-white">
+    <nav class="bg-blue-800 border-gray-200">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <button data-collapse-toggle="navbar-default" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-white rounded-lg md:hidden hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white"
+                aria-controls="navbar-default" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul
+                    class="bg-blue-800 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-blue-800">
+                    <li>
+                        <a href="/"
+                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">Home</a>
+                    </li>
+                    <li>
+                        <a href="/ner"
+                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">NER</a>
+                    </li>
+                    <li>
+                        <a href="/coreference"
+                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">Coreference</a>
+                    </li>
+                    <li>
+                        <a href="/about"
+                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-8 sm:px-16">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div class="md:w-1/2">
+                <h1 class="text-4xl font-extrabold leading-tight text-black mb-6">
+                    Assamese Annotation Tool
+                </h1>
+                <p class="text-lg text-black max-w-lg">
+                    Build rich Assamese language datasets with smart, AI-assisted annotation tools for NER and
+                    Coreference Resolution.
+                </p>
+            </div>
+            <div class="md:w-1/2 flex justify-center md:justify-end">
+                <img alt="Illustration of three people working with AI brain and data charts"
+                    class="w-full max-w-[500px] h-auto" src="/images/hero-img.png" />
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div class="border border-gray-200 rounded-md p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                Named Entity Recognition (NER)
+            </h2>
+            <p class="text-sm text-gray-500 mb-4">
+                Identify and annotate names of people, places, organizations, and other entities in Assamese text.
+                Use AI suggestions or manually tag entities to build precise NER datasets.
+            </p>
+            <a href="/ner">
+                <button class="w-full bg-blue-700 text-white text-sm py-2 rounded-md hover:bg-blue-800 transition"
+                    type="button">
+                    Start NER Annotation
+                </button>
+            </a>
+
+        </div>
+        <div class="border border-gray-200 rounded-md p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                Coreference Resolution
+            </h2>
+            <p class="text-sm text-gray-500 mb-4">
+                Link words or phrases that refer to the same entity within a text. Annotate coreferent mentions to
+                help train models that understand context and meaning in Assamese.
+            </p>
+            <a href="/coreference">
+                <button class="w-full bg-blue-700 text-white text-sm py-2 rounded-md hover:bg-blue-800 transition"
+                    type="button">
+                    Start Coreference Annotation
+                </button>
+            </a>
+
+        </div>
+    </div>
+    </div>
+    <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+
+</body>
+
+</html>

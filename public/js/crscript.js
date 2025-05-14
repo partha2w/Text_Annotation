@@ -218,29 +218,41 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update clusters display with spacing and delete buttons
   function updateClustersDisplay() {
     const container = document.getElementById('clusters');
-    container.innerHTML = '<h3>Coreference Clusters</h3>';
+    container.innerHTML = '<h3 class="text-xl font-bold mb-4">Coreference Clusters</h3>';
 
     clusters.forEach((cluster, index) => {
       const clusterDiv = document.createElement('div');
-      clusterDiv.className = 'cluster';
+      clusterDiv.className = 'cluster mb-6 rounded-lg border border-gray-300 shadow-md';
+
       clusterDiv.innerHTML = `
-          <div class="cluster-header" style="background: ${cluster.color}">
-              ${cluster.name}
-              <button class="select-cluster" data-id="${index}">Select</button>
-              <button class="delete-cluster" data-id="${index}">Delete</button>
-          </div>
-          <div class="mentions">
-              ${cluster.mentions.map(m => `
-                  <span class="cluster-mention" 
-                        data-start="${m.start}" 
-                        data-end="${m.end}"
-                        data-sentence="${m.sentenceIndex}">
-                      ${m.text}
-                      <span class="delete-mention">×</span>
-                  </span>
-              `).join(' ')}
-          </div>
-      `;
+      <div class="flex items-center justify-between px-4 py-3 rounded-t-lg" style="background: ${cluster.color}">
+        <span class="text-black font-semibold text-lg">${cluster.name}</span>
+        <div class="space-x-2">
+          <button 
+            class="select-cluster px-3 py-1 text-sm font-medium bg-white text-gray-800 rounded hover:bg-gray-100 transition"
+            data-id="${index}">
+            Select
+          </button>
+          <button 
+            class="delete-cluster px-3 py-1 text-sm font-medium bg-red-600 text-white rounded hover:bg-red-700 transition"
+            data-id="${index}">
+            Delete
+          </button>
+        </div>
+      </div>
+      <div class="mentions p-2">
+        ${cluster.mentions.map(m => `
+          <span class="cluster-mention" 
+                data-start="${m.start}" 
+                data-end="${m.end}"
+                data-sentence="${m.sentenceIndex}">
+            ${m.text}
+            <span class="delete-mention">×</span>
+          </span>
+        `).join(' ')}
+      </div>
+    `;
+
       container.appendChild(clusterDiv);
     });
 

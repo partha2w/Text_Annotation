@@ -28,26 +28,35 @@ function updateSentence() {
 function showAnnotations(data) {
   const container = document.getElementById("annotationsContainer");
 
-  // Create a table
+  // Create table with Tailwind classes
   const table = document.createElement("table");
-  table.border = "1";
+  table.className = "min-w-full table-auto border-collapse border border-gray-300";
 
   // Create table header
   const headerRow = document.createElement("tr");
-  headerRow.innerHTML = "<th>Text</th><th>Label</th>";
+  headerRow.className = "bg-gray-200 text-left";
+  headerRow.innerHTML = `
+    <th class="border border-gray-300 px-4 py-2">Text</th>
+    <th class="border border-gray-300 px-4 py-2">Label</th>
+  `;
   table.appendChild(headerRow);
 
   // Populate table rows
   data.forEach(value => {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${value.text}</td><td>${value.label}</td>`;
-      table.appendChild(row);
+    const row = document.createElement("tr");
+    row.className = "hover:bg-gray-50";
+    row.innerHTML = `
+      <td class="border border-gray-300 px-4 py-2">${value.text}</td>
+      <td class="border border-gray-300 px-4 py-2">${value.label}</td>
+    `;
+    table.appendChild(row);
   });
 
   // Append the table to the container
   container.innerHTML = ""; // Clear previous content
   container.appendChild(table);
 }
+
 // --------------------------
 document.getElementById('prevButton').addEventListener('click', () => {
   currentIndex = (currentIndex - 1 + sentences.length) % sentences.length; // Loop back

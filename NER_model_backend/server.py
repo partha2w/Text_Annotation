@@ -6,7 +6,7 @@ from transformers import AutoModelForTokenClassification, AutoTokenizer
 app = FastAPI()
 
 # Load the AI4Bharat IndicNER model
-model_name = "ai4bharat/IndicNER"
+model_name = "../assamese-ner-model"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForTokenClassification.from_pretrained(model_name)
 
@@ -43,4 +43,3 @@ async def predict_ner(request: TextRequest):
     predicted_labels = get_predictions(text, tokenizer, model)
     
     return {"entities": predicted_labels}  # Return a JSON serializable response
-

@@ -25,7 +25,10 @@ let annotationsData = {
 };
 
 app.get("/",(req,res)=>{
-    res.render("index.ejs");
+    res.render("home.ejs");
+})
+app.get("/ner",(req,res)=>{
+    res.render("ner.ejs");
 })
 
 app.get("/about",(req,res)=>{

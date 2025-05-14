@@ -39,9 +39,9 @@
           </div>
         </div>
       </nav>
-      
-      <h1 class=" text-center text-3xl font-extrabold leading-tight text-black my-6">
-        Assamese Coreference Annotation Tool
+
+    <h1 class=" text-center text-3xl font-extrabold leading-tight text-black my-6">
+        Assamese Named Entity Recognition Tool
     </h1>
     
     <div id="content">
@@ -49,24 +49,29 @@
             <input type="file" id="textFile" accept=".txt">
             <button class="button-9" type="submit">Upload</button>
         </form>
+        <div id="annotationsContainer"></div>
         <div id="tags-input">
-            <input type="text" id="cluster-name" placeholder="Type Cluster name">
+            <input type="text" id="tag-name" placeholder="Type tag name">
+            <button id="addTag" class="button-9">Add Tag</button>
+            <button id="removeTag" class="button-9">Untag</button>
         </div>
-        <div id="clusters"></div>
+        <div id="tags"></div>
+        <button id="annotate-btn" class="button-18" onclick="analyzeText()">Annotate Text</button>
         <div class="final-btn">
             <from>
                 <!-- <label for="cars">Choose an Tagging Schemes</label> -->
                 <select name="tag_format" id="tag_format">
-                    <option value="0">Choose an Coreference Schemes</option>
-                    <option value="conill">CoNLL-2012</option>
-                    <option value="json">JSON</option>
-                    <option value="xml">XML</option>
+                    <option value="0">Choose an Tagging Schemes</option>
+                    <option value="IO">IO</option>
+                    <option value="JSON">JSON Annotation</option>
+                    <option value="BIO">BIO</option>
+                    <option value="BILUO">BILUO</option>
+                    <option value="BIL2">BIL2</option>
                 </select>
-                <button id="save-annotations-btn" class="button-7">Save Coreferences</button>
+                <button id="save-annotations-btn" class="button-7">Save Annotations</button>
             </from>
-            <button id="download-btn" class="button-7">Download Coreferences</button>
+            <button id="download-btn" class="button-7">Download Annotations</button>
         </div>
-        <div id="annotationsContainer"></div>
             <div id="editable-div" contenteditable="true">Upload a file to start...</div>
             <div id="totalSentences"></div>
             <div class="navigator">
@@ -74,8 +79,7 @@
                 <button id="nextButton">Next &gt;</button>
             </div>
     </div>
-    </div>
     <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
-<script src="js/crscript.js"></script>
+    <script src="js/nerscript.js"></script>
 </body>
 </html>

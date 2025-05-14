@@ -48,7 +48,7 @@ or
 ```sh
 uvicorn server:app --reload
 ```
-
+Wait for the log "Application startup is complete"
 This will start the FastAPI server, which will be used for automatic NER annotation.
 
 ### 2. Setting Up the Express Server

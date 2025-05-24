@@ -1,0 +1,1 @@
+export const renderCoreference = (req, res) => res.render("coreference.ejs");

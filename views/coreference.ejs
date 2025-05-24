@@ -1,81 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assamese text annotation</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <title>Assamese Coreference Annotation Tool</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Assamese&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/style.css">
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
-<body>
-    <nav class="bg-blue-800 border-gray-200">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-white rounded-lg md:hidden hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white" aria-controls="navbar-default" aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-            </svg>
-          </button>
-          <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul class="bg-blue-800 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-blue-800">
-              <li>
-                <a href="/" class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">Home</a>
-              </li>
-              <li>
-                <a href="/ner" class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">NER</a>
-              </li>
-              <li>
-                <a href="/coreference" class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">Coreference</a>
-              </li>
-              <li>
-                <a href="/about" class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">About</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      
-      <h1 class=" text-center text-3xl font-extrabold leading-tight text-black my-6">
-        Assamese Coreference Annotation Tool
-    </h1>
-    
-    <div id="content">
-        <form id="upload-form">
-            <input type="file" id="textFile" accept=".txt">
-            <button class="button-9" type="submit">Upload</button>
-        </form>
-        <div id="tags-input">
-            <input type="text" id="cluster-name" placeholder="Type Cluster name">
-        </div>
-        <div id="clusters"></div>
-        <div class="final-btn">
-            <from>
-                <!-- <label for="cars">Choose an Tagging Schemes</label> -->
-                <select name="tag_format" id="tag_format">
-                    <option value="0">Choose an Coreference Schemes</option>
-                    <option value="conill">CoNLL-2012</option>
-                    <option value="json">JSON</option>
-                    <option value="xml">XML</option>
-                </select>
-                <button id="save-annotations-btn" class="button-7">Save Coreferences</button>
-            </from>
-            <button id="download-btn" class="button-7">Download Coreferences</button>
-        </div>
-        <div id="annotationsContainer"></div>
-            <div id="editable-div" contenteditable="true">Upload a file to start...</div>
-            <div id="totalSentences"></div>
-            <div class="navigator">
-                <button id="prevButton">&lt; Previous</button>
-                <button id="nextButton">Next &gt;</button>
+
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-6 py-3">
+            <div class="flex items-center gap-2">
+                <img src="/images/hero-img.png" alt="Logo" class="h-8 w-8 rounded-full shadow" />
+                <span class="font-bold text-xl text-grey tracking-tight">Assamese Annotation</span>
             </div>
-    </div>
-    </div>
+            <button data-collapse-toggle="navbar-default" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-blue-800 rounded-lg md:hidden hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                aria-controls="navbar-default" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="flex flex-col md:flex-row md:space-x-8 font-medium">
+                    <li><a href="/"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">Home</a>
+                    </li>
+                    <li><a href="/ner"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">NER</a>
+                    </li>
+                    <li><a href="/coreference"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">Coreference</a>
+                    </li>
+                    <li><a href="/about"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Main Annotation Card -->
+    <main class="flex flex-col items-center justify-center min-h-[80vh] px-2">
+        <div class="w-full max-w-6xl bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl mt-10 mb-10 p-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-green-900 text-center mb-8">
+                Assamese Coreference Annotation Tool
+            </h1>
+
+            <!-- Upload Form -->
+            <form id="upload-form" class="flex flex-col md:flex-row items-center gap-4 mb-8">
+                <input type="file" id="textFile" accept=".txt"
+                    class="border border-gray-300 rounded-md p-2 w-full md:w-auto focus:outline-none focus:ring-2 focus:ring-blue-400 transition" />
+                <button type="submit"
+                    class="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+                    <i class="fas fa-upload mr-2"></i>Upload
+                </button>
+            </form>
+
+            <!-- Cluster Input -->
+            <div id="tags-input" class="flex flex-wrap items-center gap-3 mb-6">
+                <input type="text" id="cluster-name" placeholder="Type Cluster name"
+                    class="border border-gray-300 rounded-md p-2 flex-grow min-w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-400 transition" />
+            </div>
+
+            <!-- Clusters Display -->
+            <div id="clusters" class="flex flex-col gap-4 mb-6"></div>
+
+            <!-- Tagging Scheme and Save/Download -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+                <form class="flex items-center gap-2">
+                    <select name="tag_format" id="tag_format"
+                        class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
+                        <option value="0">Choose Coreference Scheme</option>
+                        <option value="conll">CoNLL-2012</option>
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                    </select>
+                    <button id="save-annotations-btn" type="button"
+                        class="bg-green-600 text-white py-2 px-4 rounded-lg font-semibold shadow hover:bg-green-800 transition">
+                        <i class="fas fa-save mr-1"></i>Save Coreferences
+                    </button>
+                </form>
+                <button id="download-btn" type="button"
+                    class="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+                    <i class="fas fa-download mr-1"></i>Download Coreferences
+                </button>
+            </div>
+
+            <!-- Annotation Results -->
+            <div id="annotationsContainer" class="mb-4"></div>
+
+            <!-- Editable Text Area -->
+            <div id="editable-div" contenteditable="true"
+                class="border border-gray-300 rounded-lg p-4 min-h-[90px] mb-6 text-gray-900 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400 transition text-lg"
+                style="font-family: 'Noto Sans Assamese', sans-serif;">
+                Upload a file to start...
+            </div>
+
+            <!-- Sentence Counter -->
+            <div id="totalSentences" class="text-center text-gray-700 mb-4 font-medium"></div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-center gap-4">
+                <button id="prevButton"
+                    class="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+                    &lt; Previous
+                </button>
+                <button id="nextButton"
+                    class="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold shadow hover:bg-blue-800 transition">
+                    Next &gt;
+                </button>
+            </div>
+        </div>
+    </main>
+
     <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
-<script src="js/crscript.js"></script>
+    <script src="js/crscript.js"></script>
 </body>
+
 </html>

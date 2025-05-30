@@ -74,12 +74,18 @@ export function setupAnalyzeText() {
     const button = document.getElementById("analyze-btn");
     button.disabled = true;
     button.style.opacity = 0.5;
+
+    // Get selected model
+    const modelName = document.getElementById("model-select").value;
+
     try {
-      
       const response = await fetch("/ner/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ originalText: state.originalText })
+        body: JSON.stringify({ 
+          originalText: state.originalText,
+          model: modelName // Send selected model
+        })
       });
       const data = await response.json();
       state.annotations.length = 0;

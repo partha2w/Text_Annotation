@@ -5,7 +5,8 @@ export const renderNER = (req, res) => res.render("ner.ejs");
 
 export const analyzeNER = async (req, res) => {
   try {
-    const response = await axios.post("http://127.0.0.1:8000/predict", { text: annotationsData.originalText });
+    const { model } = req.body;
+    const response = await axios.post("http://127.0.0.1:8000/predict", { text: annotationsData.originalText,model: model });
     const labels = response.data.entities;
     const words = annotationsData.originalText.split(/\s+/);
     let newAnnotations = annotationsData.annotations;
@@ -25,7 +26,6 @@ export const analyzeNER = async (req, res) => {
       startIndex += word.length + 1;
     });
     res.json({ newAnnotations });
-    res.render("index.ejs");
   } catch (error) {
     console.error("Error fetching entities:", error);
     res.status(500).json({ error: "Failed to analyze text" });

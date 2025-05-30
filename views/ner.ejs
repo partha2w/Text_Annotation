@@ -78,22 +78,31 @@
         </button>
       </div>
 
+      <!-- Tags -->
       <div id="tags" class="flex flex-wrap gap-2 mb-6"></div>
 
-      <button id="analyze-btn" type="button"
-        class="px-4 bg-indigo-600 text-white py-3 rounded-lg font-semibold shadow hover:bg-indigo-800 transition mb-8">
-        <i class="fas fa-magic mr-2"></i>AI Annotation
-      </button>
-      <span id="loading-spinner" style="display:none; margin-left:10px;">
-        <i class="fas fa-spinner fa-spin"></i>
-      </span>
+      <!-- Ai model -->
+      <div class="flex items-center gap-4 mb-4">
+        <select id="model-select" class="px-3 py-2 rounded border font-semibold shadow focus:outline-none">
+          <option value="bert">BERT Trained Model</option>
+          <option value="indicner">ai4Bharat/IndicNER</option>
+        </select>
+        <button id="analyze-btn" type="button"
+          class="px-4 bg-indigo-600 text-white py-3 rounded-lg font-semibold shadow hover:bg-indigo-800 transition">
+          <i class="fas fa-magic mr-2"></i>AI Annotation
+        </button>
+        <span id="loading-spinner" style="display:none; margin-left:10px;">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+      </div>
 
-
+      <hr/>
+      
       <!-- Tagging Scheme and Save/Download -->
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-8 mt-4">
         <form class="flex items-center gap-2">
           <select name="tag_format" id="tag_format"
-            class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
+            class="border font-semibold border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition">
             <option value="0">Choose Tagging Scheme</option>
             <option value="IO">IO</option>
             <option value="JSON">JSON Annotation</option>

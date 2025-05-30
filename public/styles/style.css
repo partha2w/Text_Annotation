@@ -1,356 +1,58 @@
-body{
-    padding: 0;
-    margin: 0;
-}
-
-#navBar ul {
-  list-style-type: none;
-  font-family:Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: .6rem;
-  overflow: hidden;
-  background-color: #257180;
-}
-
-#navBar li {
-  float: left;
-}
-
-#navBar li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 1.2rem;
-  transition-duration: 200ms;
-}
-
-#navBar li a:hover {
-  background-color: #111;
-  border-radius: .6rem;
-}
-
-#header{
-    text-align: center;
-    font-family:Arial, Helvetica, sans-serif;
-}
-#content{
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    margin: 5% auto;
-    max-width:  90%;
-    min-height: 28rem;
-    border-radius: 5px;
-}
-#upload-form{
-    text-align: center;
-    padding: 2%;
-}
-
-#tags-input input {
-  background-color: #eee;
-  border: none;
-  padding: 1rem;
-  font-size: 1rem;
-  width: 13em;
-  border-radius: 1rem;
-  color: lightcoral;
-  box-shadow: 0 0.4rem #dfd9d9;
-  cursor: pointer;
-  margin: .5rem 1rem;
-  font-family:Arial, Helvetica, sans-serif;
-}
-
-#tags-input input:focus {
-  outline-color: lightcoral;
-}
-
-#tag-name{
-  font-size: 18px;
-  padding: 5px;
-  max-width: 15%;
-}
-#tags-input button{
-  font-size: 18px;
-  padding: 8px;
-  margin: 5px;
-  cursor: pointer;
-}
-
 .tag-button {
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  margin: .5rem 1rem;
-  cursor: pointer;
-  font-size: 16px;
-  font-family:Arial, Helvetica, sans-serif;
-}
-
-#annotationsContainer{
-  margin: 1rem;
-}
-
-#editable-div {
-  /* font-family: "Noto Sans Assamese", sans-serif; */
-  border: 1px solid #ccc;
-  padding: .8rem;
-  margin: 1rem;
-  min-height: 4rem;
-  text-align: justify;
-  line-height: 1.7rem;
-}
-
-#addTag{
-background-color: rgb(1, 110, 1);
-}
-#removeTag{
-background-color: #c21700;
-}
-
-#tag_format{
-  height: 2.4rem;
-  padding: 5px;
-}
-
-.navigator{
-  margin: 1rem;
-}
-
-.about{
-  margin: 5% auto;
-  max-width: 80%;
-  text-align: justify;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.4rem;
-}
-
-.about h1{
-  text-align: center;
-}
-
-.button-9 {
-  appearance: button;
-  backface-visibility: hidden;
-  background-color: #405cf5;
-  border-radius: 6px;
-  border-width: 0;
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
-  font-size: 100%;
-  height: 44px;
-  line-height: 1.15;
-  margin: 12px 0 0;
-  outline: none;
-  overflow: hidden;
-  padding: 0 25px;
-  position: relative;
-  text-align: center;
-  text-transform: none;
-  transform: translateZ(0);
-  transition: all .2s,box-shadow .08s ease-in;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 10%;
-}
-
-.button-9:disabled {
-  cursor: default;
-}
-
-.button-9:focus {
-  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
-}
-
-.entity-person {
-  background-color: lightcoral;
-}
-.entity-location {
-  background-color: lightgreen;
-}
-.entity-animal{
-  background-color: lightsalmon;
-}
-.entity-date{
-  background-color: lightgrey;
-}
-.entity-river{
-  background-color: lightblue;
-}
-.entity-org{
-  background-color: lightyellow;
-}
-
-
-.button-18 {
-  align-items: center;
-  background-color: #0A66C2;
-  border: 0;
-  border-radius: 100px;
-  box-sizing: border-box;
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 9999px;
+  color: #000;
   font-weight: 600;
-  justify-content: center;
-  line-height: 20px;
-  max-width: 480px;
-  min-height: 40px;
-  min-width: 0px;
-  overflow: hidden;
-  margin: .5rem 1rem;
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: center;
-  touch-action: manipulation;
-  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
-  user-select: none;
-  -webkit-user-select: none;
-  vertical-align: middle;
-}
-
-.button-18:hover,
-.button-18:focus { 
-  background-color: #16437E;
-  color: #ffffff;
-}
-
-.button-18:active {
-  background: #09223b;
-  color: rgb(255, 255, 255, .7);
-}
-
-.button-18:disabled { 
-  cursor: not-allowed;
-  background: rgba(0, 0, 0, .08);
-  color: rgba(0, 0, 0, .3);
-}
-
-
-/* CSS */
-.button-7 {
-  background-color: #0095ff;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI","Liberation Sans",sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.15385;
+  box-shadow: 0 2px 8px 0 rgba(59,130,246,0.1);
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+  border: none;
   outline: none;
-  padding: 8px .8em;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  white-space: nowrap;
-}
-
-.button-7:hover,
-.button-7:focus {
-  background-color: #07c;
-}
-
-.button-7:focus {
-  box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
-}
-
-.button-7:active {
-  background-color: #0064bd;
-  box-shadow: none;
-}
-
-.final-btn{
-  display: flex;
-  justify-content: space-between;
-  margin: 1rem;
-}  
-
-
-.mention {
-  background-color: #98FB98;
-  padding: 2px 4px;
-  border-radius: 3px;
   cursor: pointer;
+  font-size: 1rem;
 }
-
-.mention.selected {
-  border: 2px solid #ff0000;
+.tag-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px 0 rgba(59,130,246,0.15);
 }
-
-.cluster {
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
-.cluster-header {
-  padding: 5px;
-  margin-bottom: 5px;
+.tag-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 
 .mention-popup {
-  background: white;
-  border: 1px solid #ccc;
-  padding: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.button-9 {
-  margin: 5px;
-}
-
-.navigator {
-  margin: 20px 0;
-  text-align: center;
-}
-
-#clusters {
-  margin: 20px 0;
-  padding: 10px;
-  border: 1px solid #eee;
-}
-
-.mentions {
-  margin: 10px 0;
+  z-index: 9999;
+  background: rgba(255,255,255,0.97);
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  padding: 1rem;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.cluster-mention {
-  background: #f0f0f0;
-  padding: 4px 8px;
-  border-radius: 4px;
-  display: inline-block;
-  position: relative;
+  align-items: center;
+  gap: 0.5rem;
+  /* Optional: add a subtle border for clarity */
+  border: 1px solid #e0e7ef;
 }
 
 .delete-mention {
-  color: red;
-  margin-left: 8px;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: #fee2e2;
+  color: #dc2626;
   font-weight: bold;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
-
-.delete-cluster {
-  background: #ff4444;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  margin-left: 10px;
-  padding: 2px 5px;
+.delete-mention:hover {
+  background: #dc2626;
+  color: #fff;
 }

@@ -1,109 +1,114 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>
-        Assamese annotation Tool
-    </title>
-    <link rel="stylesheet" href="styles/style.css">
-    <script src="https://cdn.tailwindcss.com">
-    </script>
+    <title>Assamese Annotation Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-white">
-    <nav class="bg-blue-800 border-gray-200">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+<body class="bg-blue-50 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-6 py-3">
+            <div class="flex items-center gap-2">
+                <img src="/images/hero-img.png" alt="Logo" class="h-8 w-8 rounded-full shadow" />
+                <span class="font-bold text-xl text-grey tracking-tight">Assamese Annotation</span>
+            </div>
             <button data-collapse-toggle="navbar-default" type="button"
-                class="inline-flex items-center p-2 w-10 h-10 justify-center text-white rounded-lg md:hidden hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-blue-800 rounded-lg md:hidden hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 aria-controls="navbar-default" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 1h15M1 7h15M1 13h15" />
-                </svg>
+                <i class="fas fa-bars text-2xl"></i>
             </button>
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                <ul
-                    class="bg-blue-800 font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-blue-800">
-                    <li>
-                        <a href="/"
-                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">Home</a>
+                <ul class="flex flex-col md:flex-row md:space-x-8 font-medium">
+                    <li><a href="/"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">Home</a>
                     </li>
-                    <li>
-                        <a href="/ner"
-                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">NER</a>
+                    <li><a href="/ner"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">NER</a>
                     </li>
-                    <li>
-                        <a href="/coreference"
-                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">Coreference</a>
+                    <li><a href="/coreference"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">Coreference</a>
                     </li>
-                    <li>
-                        <a href="/about"
-                            class="block py-2 px-3 text-white rounded md:p-0 hover:bg-blue-700 md:hover:bg-transparent">About</a>
+                    <li><a href="/about"
+                            class="block py-2 px-4 text-[#1A1A1D] hover:text-blue-900 hover:underline transition">About</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-6xl mx-auto px-8 sm:px-16">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <div class="md:w-1/2">
-                <h1 class="text-4xl font-extrabold leading-tight text-black mb-6">
-                    Assamese Annotation Tool
-                </h1>
-                <p class="text-lg text-black max-w-lg">
-                    Build rich Assamese language datasets with smart, AI-assisted annotation tools for NER and
-                    Coreference Resolution.
-                </p>
-            </div>
-            <div class="md:w-1/2 flex justify-center md:justify-end">
-                <img alt="Illustration of three people working with AI brain and data charts"
-                    class="w-full max-w-[500px] h-auto" src="/images/hero-img.png" />
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center gap-10">
+        <div class="md:w-1/2 space-y-6">
+            <h1 class="text-5xl font-extrabold text-[#1A1A1D] leading-tight drop-shadow">
+                Assamese Annotation Tool
+            </h1>
+            <p class="text-xl text-[#3F4F44] max-w-lg">
+                Build rich Assamese language datasets with smart, AI-assisted annotation tools for NER and Coreference
+                Resolution.
+            </p>
+            <div class="flex gap-4 mt-6">
+                <a href="/ner"
+                    class="px-6 py-3 bg-blue-800 text-white rounded-lg shadow hover:scale-105 hover:bg-blue-600  transition-all font-semibold">
+                    <i class="fas fa-highlighter mr-2"></i>Start NER
+                </a>
+                <a href="/coreference"
+                    class="px-6 py-3 bg-green-800 text-white rounded-lg shadow hover:scale-105 hover:bg-green-600 transition-all font-semibold">
+                    <i class="fas fa-link mr-2"></i>Start Coreference
+                </a>
             </div>
         </div>
-    </div>
+        <div class="md:w-1/2 flex justify-center">
+            <img alt="Illustration of people working with AI brain and data charts"
+                class="w-full max-w-[420px] h-auto rounded-2xl shadow-lg ring-4 ring-blue-200/30"
+                src="/images/hero-img.png" />
+        </div>
+    </section>
 
-    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <div class="border border-gray-200 rounded-md p-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-2">
+    <!-- Feature Cards -->
+    <section class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-6 pb-12">
+        <!-- NER Card -->
+        <div
+            class="bg-white/70 backdrop-blur-xl border border-blue-100 rounded-2xl shadow-lg p-8 flex flex-col transition hover:-translate-y-1 hover:shadow-2xl duration-200">
+            <h2 class="text-2xl font-bold text-[#1A1A1D] mb-2 flex items-center gap-2">
+                <i class="fas fa-highlighter text-blue-900"></i>
                 Named Entity Recognition (NER)
             </h2>
-            <p class="text-sm text-gray-500 mb-4">
-                Identify and annotate names of people, places, organizations, and other entities in Assamese text.
-                Use AI suggestions or manually tag entities to build precise NER datasets.
+            <p class="text-base text-[#3F4F44] mb-6 flex-grow">
+                Identify and annotate names of people, places, organizations, and other entities in Assamese text. Use
+                AI suggestions or manually tag entities to build precise NER datasets.
             </p>
-            <a href="/ner">
-                <button class="w-full bg-blue-700 text-white text-sm py-2 rounded-md hover:bg-blue-800 transition"
-                    type="button">
-                    Start NER Annotation
-                </button>
+            <a href="/ner"
+                class="mt-2 inline-block w-full text-center bg-blue-800 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-all">
+                Start NER Annotation
             </a>
-
         </div>
-        <div class="border border-gray-200 rounded-md p-6">
-            <h2 class="text-lg font-semibold text-gray-900 mb-2">
+        <!-- Coreference Card -->
+        <div
+            class="bg-white/70 backdrop-blur-xl border border-blue-100 rounded-2xl shadow-lg p-8 flex flex-col transition hover:-translate-y-1 hover:shadow-2xl duration-200">
+            <h2 class="text-2xl font-bold text-[#1A1A1D] mb-2 flex items-center gap-2">
+                <i class="fas fa-link text-green-900"></i>
                 Coreference Resolution
             </h2>
-            <p class="text-sm text-gray-500 mb-4">
-                Link words or phrases that refer to the same entity within a text. Annotate coreferent mentions to
-                help train models that understand context and meaning in Assamese.
+            <p class="text-base text-[#3F4F44] mb-6 flex-grow">
+                Link words or phrases that refer to the same entity within a text. Annotate coreferent mentions to help
+                train models that understand context and meaning in Assamese.
             </p>
-            <a href="/coreference">
-                <button class="w-full bg-blue-700 text-white text-sm py-2 rounded-md hover:bg-blue-800 transition"
-                    type="button">
-                    Start Coreference Annotation
-                </button>
+            <a href="/coreference"
+                class="mt-2 inline-block w-full text-center bg-green-800 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-all">
+                Start Coreference Annotation
             </a>
-
         </div>
-    </div>
-    </div>
-    <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+    </section>
 
+
+    <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
 </body>
 
 </html>

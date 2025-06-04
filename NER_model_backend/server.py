@@ -1,10 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 import torch
 from transformers import AutoModelForTokenClassification, AutoTokenizer
 
+from coreference_model import AssamesesCoreferenceResolver
+
 app = FastAPI()
+
+# # Initialize coreference resolver
+coreference_resolver = AssamesesCoreferenceResolver()
+
+# Pydantic model
+class CoreferenceRequest(BaseModel):
+    text: str
 
 MODEL_PATHS = {
     "bert": "../assamese-ner-model",
@@ -89,4 +98,13 @@ async def predict_ner(request: TextRequest):
 
     return {"entities": predicted_labels}
 
-
+@app.post("/coreference")
+async def predict_coreference(request: CoreferenceRequest):
+    """
+    Coreference resolution endpoint
+    """
+    try:
+        result = coreference_resolver.analyze(request.text)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Coreference processing failed: {str(e)}")

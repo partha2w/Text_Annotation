@@ -63,6 +63,14 @@
                 </button>
             </form>
 
+            <button id="analyze-btn" type="button"
+                class="px-4 bg-indigo-600 text-white py-3 rounded-lg font-semibold shadow hover:bg-indigo-800 transition">
+                <i class="fas fa-magic mr-2"></i>AI Annotation
+            </button>
+            <span id="loading-spinner" style="display:none; margin-left:10px;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </span>
+
             <!-- Cluster Input -->
             <div id="tags-input" class="flex flex-wrap items-center gap-3 mb-6">
                 <input type="text" id="cluster-name" placeholder="Type Cluster name"
